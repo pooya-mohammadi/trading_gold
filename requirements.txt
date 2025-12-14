@@ -6,3 +6,4 @@ onnxruntime
 onnx
 scikit-learn
 pandas
+lightgbm
