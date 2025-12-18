@@ -1,43 +1,27 @@
+from functools import partial
+
 import numpy as np
-import os, json
-import numpy as np
-import pandas as pd
-import warnings
-
-
-
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import FunctionTransformer, StandardScaler
 from sklearn.impute import SimpleImputer
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, precision_recall_curve
-from sklearn.base import clone
-
-# ====== Base models ======
-from xgboost import XGBClassifier
-
-
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer, StandardScaler
+# ====== Base models ======
+from xgboost import XGBClassifier
+from settings import RAW_FEATURES
 
 # ====== ONNX toolchains ======
-import onnx
-from onnx import helper, numpy_helper, TensorProto
-import onnxruntime as ort
 
-from onnxmltools import convert_xgboost
-from onnxmltools.convert.common.data_types import FloatTensorType as OXFloatTensorType
 try:
     from onnxmltools import convert_lightgbm
+
     _HAS_CONVERT_LGBM = True
 except Exception:
     _HAS_CONVERT_LGBM = False
 
-from skl2onnx import convert_sklearn
-from skl2onnx.common.data_types import FloatTensorType as SKLFloatTensorType
-
-import matplotlib.pyplot as plt
 try:
     import lightgbm as lgb
+
     _HAS_LGBM = True
 except Exception:
     _HAS_LGBM = False
@@ -78,18 +62,18 @@ def make_stateless_features(X_np: np.ndarray, raw_features) -> np.ndarray:
 
     # مپینگ جدید که خودت دادی
     tf_mapping = {
-        1:     1.0,
-        2:     2.0,
-        3:     3.0,
-        4:     4.0,
-        5:     5.0,
-        6:     6.0,
-        10:    7.0,
-        12:    8.0,
-        15:    9.0,
-        20:   10.0,
-        30:   11.0,
-        16385:12.0
+        1: 1.0,
+        2: 2.0,
+        3: 3.0,
+        4: 4.0,
+        5: 5.0,
+        6: 6.0,
+        10: 7.0,
+        12: 8.0,
+        15: 9.0,
+        20: 10.0,
+        30: 11.0,
+        16385: 12.0
     }
 
     # پیش‌فرض: NaN (اگر خارج از مپینگ باشد، به Imputer واگذار می‌شود)
@@ -109,6 +93,7 @@ def make_stateless_features(X_np: np.ndarray, raw_features) -> np.ndarray:
 def _to_numpy32(X):
     return np.asarray(X, dtype=np.float32, order="C")
 
+
 # =========================
 # تخمین تعداد پارامتر و ریسک اوورفیت
 # =========================
@@ -121,6 +106,7 @@ def _count_params_linear_or_logistic(model):
         n_params += np.asarray(model.intercept_).size
     return int(n_params)
 
+
 def _count_params_mlp(model):
     if not hasattr(model, "coefs_") or not hasattr(model, "intercepts_"):
         raise ValueError("MLP model has no coefs_/intercepts_. Make sure it is fitted.")
@@ -130,6 +116,7 @@ def _count_params_mlp(model):
     for b in model.intercepts_:
         n_params += np.asarray(b).size
     return int(n_params)
+
 
 def _count_params_tree_ensemble(model):
     n_estimators = getattr(model, "n_estimators", None)
@@ -150,6 +137,7 @@ def _count_params_tree_ensemble(model):
     n_params = int(n_estimators * nodes_per_tree)
     return n_params
 
+
 def estimate_model_params(model):
     if isinstance(model, LogisticRegression):
         return _count_params_linear_or_logistic(model)
@@ -160,6 +148,7 @@ def estimate_model_params(model):
     if _HAS_LGBM and isinstance(model, lgb.LGBMClassifier):
         return _count_params_tree_ensemble(model)
     raise ValueError(f"Cannot estimate parameters for model type: {model.__class__.__name__}")
+
 
 def categorize_overfit_risk(n_samples, n_params):
     if n_params <= 0:
@@ -180,6 +169,7 @@ def categorize_overfit_risk(n_samples, n_params):
 
     return level, ratio
 
+
 def estimate_overfit_risk(model, n_train_samples, verbose=True):
     n_params = estimate_model_params(model)
     risk_level, ratio = categorize_overfit_risk(n_train_samples, n_params)
@@ -199,7 +189,7 @@ def estimate_overfit_risk(model, n_train_samples, verbose=True):
     return info
 
 
-def make_classifier(model_family: str, val_frac, num_classes=4):
+def make_classifier(model_family: str, val_frac, num_classes=4, current_lgbm_params: dict = None):
     fam = model_family.lower()
     if fam == "xgb":
         return XGBClassifier(
@@ -231,11 +221,10 @@ def make_classifier(model_family: str, val_frac, num_classes=4):
             n_jobs=-1,
             random_state=42,
             force_col_wise=True,  # حذف سربار تست col-wise
-            verbosity=-1          # لاگ کمتر
+            verbosity=-1  # لاگ کمتر
         )
-        global CURRENT_LGBM_PARAMS
-        if CURRENT_LGBM_PARAMS is not None:
-            base_params.update(CURRENT_LGBM_PARAMS)
+        if current_lgbm_params is not None:
+            base_params.update(current_lgbm_params)
         return lgb.LGBMClassifier(**base_params)
     elif fam == "lr":
         return LogisticRegression(
@@ -247,7 +236,7 @@ def make_classifier(model_family: str, val_frac, num_classes=4):
         )
     elif fam == "mlp":
         return MLPClassifier(
-            hidden_layer_sizes=(256,128),
+            hidden_layer_sizes=(256, 128),
             activation="relu",
             solver="adam",
             alpha=1e-3,
@@ -267,21 +256,22 @@ def make_classifier(model_family: str, val_frac, num_classes=4):
 
 
 # ترنسفورمر فیچرها
-feat_builder = FunctionTransformer(make_stateless_features, validate=False)
+feat_builder = FunctionTransformer(partial(make_stateless_features, raw_features=RAW_FEATURES), validate=False)
 to_numpy = FunctionTransformer(_to_numpy32, validate=False)
 
 
 # Base pipeline (clone per run)
-def make_base_pipeline(model_family, val_frac):
-    clf = make_classifier(num_classes=4, model_family=model_family, val_frac=val_frac)
+def make_base_pipeline(model_family, val_frac, lgbm_params: dict):
+    # clf = make_classifier(num_classes=4, model_family=model_family, val_frac=val_frac, current_lgbm_params=lgbm_params)
+    from tabpfn.classifier import TabPFNClassifier
+    clf = TabPFNClassifier()
     fam = model_family.lower()
     steps = [
-        ("to_np", to_numpy),                  # تضمین NumPy
-        ("feat",  feat_builder),
-        ("imp",   SimpleImputer(strategy="median"))
+        ("to_np", to_numpy),  # تضمین NumPy
+        ("feat", feat_builder),
+        ("imp", SimpleImputer(strategy="median"))
     ]
     if fam in ("lr", "mlp"):
         steps.append(("scaler", StandardScaler(with_mean=True)))  # اسکیلینگ واقعی
     steps.append(("clf", clf))
     return Pipeline(steps=steps)
-
