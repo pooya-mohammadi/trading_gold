@@ -2,6 +2,7 @@ import warnings
 
 import numpy as np
 import pandas as pd
+from deep_utils import StringUtils
 
 from settings import (CSV_PATH, ENCODING, RAW_FEATURES, USE_TIME_WINDOW, TIME_START, TIME_END, CLASS_ORDER,
                       TARGET_CLASS, TARGET_MODE, TARGET_GROUP, CLS2ID, MODEL_FAMILY, VAL_FRAC, FOLD_MONTHS,
@@ -130,7 +131,7 @@ else:
 if "OpenTime" not in df.columns:
     raise ValueError("OpenTime column is required for time-based walk-forward splits.")
 
-df_sorted = df.sort_values("OpenTime").reset_index(drop=True)
+df_sorted = df.sort_values("OpenTime").reset_index(drop=True)[:50000]
 X_all_df = df_sorted[RAW_FEATURES].astype(np.float32)
 X_all_np_full = X_all_df.to_numpy(dtype=np.float32, copy=False)  # NumPy اصلی برای تمام fit/predict
 y_all_full = y_all_full[df_sorted.index]
@@ -177,7 +178,8 @@ def make_target_scores(proba: np.ndarray, y_int: np.ndarray):
 def run_for_config(config_name="BASE", lgbm_params=None):
     # global CURRENT_LGBM_PARAMS
     # CURRENT_LGBM_PARAMS = lgbm_params
-
+    # X_all_np_full = X_all_np_full[:10000]
+    # y_all_full = y_all_full[:10000]
     # کپی لوکال از داده‌ها
     X_all_np = X_all_np_full
     y_all = y_all_full
@@ -454,8 +456,8 @@ def run_for_config(config_name="BASE", lgbm_params=None):
         return final_model
 
     fam = MODEL_FAMILY.lower()
-    onnx_built = False
-    if fam in ("xgb", "lgbm", "lr", "mlp"):
+    build_onnx = False
+    if fam in ("xgb", "lgbm", "lr", "mlp", "tabpfn"):
         clf = final_pipe.named_steps["clf"]
         if fam == "xgb":
             core = convert_xgboost(
@@ -463,6 +465,7 @@ def run_for_config(config_name="BASE", lgbm_params=None):
                 initial_types=[("engineered_in_imp", OXFloatTensorType([None, engineered_len]))],
                 target_opset=15
             )
+            build_onnx = True
         elif fam == "lgbm":
             if not _HAS_CONVERT_LGBM:
                 raise RuntimeError("onnxmltools.convert_lightgbm در دسترس نیست.")
@@ -471,27 +474,31 @@ def run_for_config(config_name="BASE", lgbm_params=None):
                 initial_types=[("engineered_in_imp", OXFloatTensorType([None, engineered_len]))],
                 target_opset=15
             )
+            build_onnx = True
+        elif fam == 'tabpfn':
+            StringUtils.print("Please implement me Dude:)")
         else:
             core = convert_sklearn(
                 clf,
                 initial_types=[("engineered_in_imp", SKLFloatTensorType([None, engineered_len]))],
                 target_opset=15
             )
+            build_onnx = True
+        if build_onnx:
+            full, prob_out = build_pregraph_plus_core(core)
+            full_final = add_profit_loss_projection(full, prob_out)
 
-        full, prob_out = build_pregraph_plus_core(core)
-        full_final = add_profit_loss_projection(full, prob_out)
-
-        onnx.save(full_final, onnx_path)
-        print(f"✅ [{config_name}] Saved ONNX to:", onnx_path)
-        print("✅ Saved feature JSON to:", FEATURE_JSON)
-        onnx_built = True
+            onnx.save(full_final, onnx_path)
+            print(f"✅ [{config_name}] Saved ONNX to:", onnx_path)
+            print("✅ Saved feature JSON to:", FEATURE_JSON)
+            # onnx_built = True
     else:
         raise ValueError(f"Unknown MODEL_FAMILY: {MODEL_FAMILY}")
 
     # =========================
     # 6) Quick ONNX check
     # =========================
-    if onnx_built:
+    if build_onnx:
         sess = ort.InferenceSession(onnx_path, providers=["CPUExecutionProvider"])
         inp_name = sess.get_inputs()[0].name
         out_name = sess.get_outputs()[0].name
@@ -527,7 +534,7 @@ def run_for_config(config_name="BASE", lgbm_params=None):
         plt.savefig(plot_path, dpi=150)
         print(f"✅ [{config_name}] WFV metrics plot saved to:", plot_path)
 
-        plt.show()
+        # plt.show()
 
     # =========================
     # 8) Top-20 feature importance report

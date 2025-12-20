@@ -41,13 +41,13 @@ TIME_END = "2025-09-01"  # مثلاً: "2018-12-31"
 # ----- Reverse, month-based WFV settings -----
 # مثال: FOLD_MONTHS=6, VAL_MONTHS_PER_FOLD=1
 # یعنی هر فولد 6 ماه؛ 5 ماه اول Train، 1 ماه آخر Test/Verification
-FOLD_MONTHS = 48
+FOLD_MONTHS = 36
 VAL_MONTHS_PER_FOLD = 2
 
 # =========================
 # انتخاب مدل — xgb | lgbm | lr | mlp
 # =========================
-MODEL_FAMILY = "lgbm"
+MODEL_FAMILY = "tabpfn"
 
 # ----- Grid over LGBM hyperparameters -----
 USE_GRID = True  # اگر True باشد، چند تنظیم LGBM را پشت سر هم تست می‌کند

@@ -1,6 +1,7 @@
 from functools import partial
 
 import numpy as np
+from build.lib.deep_utils import StringUtils
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
@@ -171,21 +172,30 @@ def categorize_overfit_risk(n_samples, n_params):
 
 
 def estimate_overfit_risk(model, n_train_samples, verbose=True):
-    n_params = estimate_model_params(model)
-    risk_level, ratio = categorize_overfit_risk(n_train_samples, n_params)
-    info = {
-        "n_params": int(n_params),
-        "n_train_samples": int(n_train_samples),
-        "samples_per_param": float(ratio),
-        "risk_level": risk_level,
-    }
-    if verbose:
-        print("===== Overfit risk estimation =====")
-        print(f"Model: {model.__class__.__name__}")
-        print(f"Train samples (N): {n_train_samples}")
-        print(f"Estimated parameters (P): {n_params}")
-        print(f"Samples per parameter (N/P): {ratio:,.3f}")
-        print(f"Risk level: {risk_level}")
+    try:
+        n_params = estimate_model_params(model)
+        risk_level, ratio = categorize_overfit_risk(n_train_samples, n_params)
+        info = {
+            "n_params": int(n_params),
+            "n_train_samples": int(n_train_samples),
+            "samples_per_param": float(ratio),
+            "risk_level": risk_level,
+        }
+        if verbose:
+            print("===== Overfit risk estimation =====")
+            print(f"Model: {model.__class__.__name__}")
+            print(f"Train samples (N): {n_train_samples}")
+            print(f"Estimated parameters (P): {n_params}")
+            print(f"Samples per parameter (N/P): {ratio:,.3f}")
+            print(f"Risk level: {risk_level}")
+    except Exception as e:
+        StringUtils.print("Cannot estimate parameters for model type: TabPFNClassifier")
+        info = {
+            "n_params": 0,
+            "n_train_samples": int(n_train_samples),
+            "samples_per_param": 1,
+            "risk_level": "🟡 MODERATE overfit risk",
+        }
     return info
 
 
