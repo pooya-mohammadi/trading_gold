@@ -1,9 +1,0 @@
-xgboost
-skl2onnx
-matplotlib
-onnxmltools
-onnxruntime
-onnx
-scikit-learn
-pandas
-lightgbm
