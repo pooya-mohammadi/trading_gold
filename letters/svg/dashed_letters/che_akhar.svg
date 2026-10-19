@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="500"
+   height="500"
+   viewBox="0 0 132.29166 132.29167"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="DartArrow"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="0.5"
+       markerHeight="0.5"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         transform="scale(-0.5)"
+         id="path6" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="DartArrow-7"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="0.5"
+       markerHeight="0.5"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         transform="scale(-0.5)"
+         id="path6-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="DartArrow-7-5"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="0.5"
+       markerHeight="0.5"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         transform="scale(-0.5)"
+         id="path6-9-0" />
+    </marker>
+  </defs>
+  <g
+     id="layer2">
+    <g
+       id="g5">
+      <path
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3.2, 3.2;stroke-dashoffset:0"
+         d="m 42.678757,43.849821 c 0,0 5.204727,-7.1565 11.450399,-7.676972 6.24567,-0.520473 37.083674,1.691536 37.083674,1.691536 0,0 -44.240174,10.019099 -45.931711,35.262021 -1.691534,25.242924 29.276587,25.112805 51.136438,18.997252"
+         id="path8"
+         class="path" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path9"
+         cx="70.458984"
+         cy="66.685555"
+         r="2.9276586" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path9-0"
+         cx="74.549049"
+         cy="75.728516"
+         r="2.9276586" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path9-6"
+         cx="79.72364"
+         cy="66.759346"
+         r="2.9276586" />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.08489;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#DartArrow)"
+         d="m 39.168249,40.594185 4.234929,-4.411384"
+         id="path10" />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.08489;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#DartArrow-7)"
+         d="m 97.174485,40.174446 -5.652846,2.332439"
+         id="path10-9"
+         class="hint" />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.08489;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#DartArrow-7-5)"
+         d="m 40.474922,74.25349 0.724326,6.072091"
+         id="path10-9-6"
+         class="hint" />
+    </g>
+  </g>
+</svg>

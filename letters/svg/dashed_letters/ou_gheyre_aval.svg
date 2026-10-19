@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="500"
+   height="500"
+   viewBox="0 0 132.29166 132.29167"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer2">
+    <g
+       id="g5">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3, 3;stroke-dashoffset:0"
+         d="m 66.769455,74.574805 c 0,0 -4.60037,4.140335 -11.592937,2.392193 -7.06229,-1.765573 -6.283313,-5.347686 -6.348512,-7.68262 -0.05814,-2.082095 0.845412,-11.966493 8.832713,-12.144981 8.234665,-0.184016 10.258829,10.948884 10.258829,10.948884 0,0 1.518124,12.605017 -4.922398,23.27788 C 56.556631,102.03902 42.5715,105.5353 42.5715,105.5353"
+         id="path2"
+         class="path" />
+    </g>
+    <g
+       id="g4-8"
+       transform="matrix(0.20746912,0.67407895,-0.67407895,0.20746912,62.860587,14.69572)"
+       class="hint">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+         d="m 89.222014,25.005613 v 6.624535"
+         id="path3-2" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+         d="m 87.602052,29.276587 1.626476,2.895129 1.659009,-2.927659"
+         id="path4-4" />
+    </g>
+    <g
+       id="g4-8-1"
+       transform="matrix(0.70456717,-0.03179578,0.03179578,0.70456717,7.7964795,51.571419)"
+       class="hint">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+         d="m 89.222014,25.005613 v 6.624535"
+         id="path3-2-1" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+         d="m 87.602052,29.276587 1.626476,2.895129 1.659009,-2.927659"
+         id="path4-4-5" />
+    </g>
+  </g>
+</svg>

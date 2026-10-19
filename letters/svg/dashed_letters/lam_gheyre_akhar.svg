@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="500"
+   height="500"
+   viewBox="0 0 132.29166 132.29167"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1"><marker
+       style="overflow:visible"
+       id="DartArrow-7-0-83-4-9-3-0"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="0.5"
+       markerHeight="0.5"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid"><path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         transform="scale(-0.5)"
+         id="path6-7-9-83-9-6-3-8" /></marker></defs><g
+     id="layer2"><g
+       id="g5"><g
+         id="layer1"
+         transform="translate(-47.525902,-65.551613)"><g
+           id="g5-3"
+           transform="translate(49.617369,65.576236)"><path
+             style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.24009;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#DartArrow-7-0-83-4-9-3-0)"
+             d="m 83.165118,29.270046 -0.0072,4.849111"
+             id="path13-8-0-1-4-4-6"
+             class="hint" /><path
+             style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3.2, 3.2;stroke-dashoffset:0;stroke-opacity:1"
+             d="m 76.85091,29.233741 0.368031,37.35502 c 0,13.438126 -4.048328,13.065049 -24.842006,13.433079"
+             id="path22"
+             class="path" /></g></g></g></g></svg>
